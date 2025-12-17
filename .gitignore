@@ -1,0 +1,24 @@
+# Binaries and build artifacts
+/netagent
+/netagent.exe
+*.test
+*.out
+*.prof
+coverage*.out
+/bin/
+/build/
+/dist/
+
+# Local tooling caches and temp files
+.prometheus/
+.tmp/
+tmp/
+*.log
+*.tmp
+
+# Editors / OS cruft
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo

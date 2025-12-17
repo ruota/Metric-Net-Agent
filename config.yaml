@@ -1,0 +1,9 @@
+interfaces: ["wlp9s0f0"]
+targets:
+  - name: "chrome"
+    match_comm: "chrome"     # process name from /proc/<pid>/comm
+export:
+  listen_addr: ":9102"
+otel:
+  endpoint: "127.0.0.1:4318"  # OTLP collector endpoint
+  insecure: true              # set true for plaintext OTLP

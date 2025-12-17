@@ -1,0 +1,130 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "iteration": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "TEMPO_DS"
+      },
+      "description": "Trace node graph built from Tempo data. Use TraceQL filter to scope.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "edges": {
+          "arrows": "to",
+          "color": {
+            "inherit": "both"
+          },
+          "label": "trace",
+          "selfLoops": "none",
+          "smooth": {
+            "type": "continuous"
+          }
+        },
+        "node": {
+          "borderWidth": 1,
+          "color": {
+            "border": "darkblue",
+            "highlight": "blue",
+            "hover": "purple",
+            "background": "lightblue"
+          },
+          "shape": "dot",
+          "size": 12
+        },
+        "settings": {
+          "layout": "forceDirected"
+        },
+        "tooltip": {
+          "mode": "single"
+        },
+        "traceQL": {
+          "query": "{ span.name =~ \".*\" } | graph"
+        }
+      },
+      "title": "Tempo Trace Graph",
+      "type": "nodeGraph"
+    },
+    {
+      "datasource": {
+        "type": "tempo",
+        "uid": "TEMPO_DS"
+      },
+      "description": "Recent spans matching the filter. Adjust TraceQL as needed.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 2,
+      "options": {
+        "query": "{ span.name =~ \".*\" }",
+        "tableView": true
+      },
+      "title": "Span list (Tempo)",
+      "type": "traceqlEditor"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [
+    "netagent",
+    "tempo",
+    "otlp"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "NetAgent Tempo Trace Graph",
+  "uid": "netagent-tempo-trace",
+  "version": 1,
+  "weekStart": ""
+}

@@ -1,0 +1,14 @@
+# Linguaggio principale
+*.go linguist-language=Go
+
+# Codice C di supporto (cgo, binding, ecc.)
+*.c linguist-generated=true
+*.h linguist-generated=true
+
+# Dipendenze
+vendor/** linguist-vendored
+
+# Codice generato
+**/generated/** linguist-generated
+**/*_gen.go linguist-generated
+

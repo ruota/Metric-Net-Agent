@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 5s
+scrape_configs:
+  - job_name: netagent
+    static_configs:
+      # Override this target if NetAgent is not on the host.
+      - targets: ['host.docker.internal:9102']

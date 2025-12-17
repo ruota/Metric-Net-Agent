@@ -1,0 +1,54 @@
+version: "3.9"
+
+networks:
+  netagent-demo:
+    driver: bridge
+
+volumes:
+  tempo-data: {}
+
+services:
+  tempo:
+    image: ${TEMPO_IMAGE:-grafana/tempo:latest}
+    command: ["-config.file=/etc/tempo.yaml"]
+    networks: [netagent-demo]
+    ports:
+      - "3200:3200"       # Tempo HTTP/UI
+      - "${HOST_OTLP_PORT:-4318}:4317" # OTLP gRPC exposed on host
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml:ro
+      - tempo-data:/tmp/tempo
+
+  otelcol:
+    image: ${COLLECTOR_IMAGE:-otel/opentelemetry-collector-contrib:0.102.0}
+    command: ["--config", "/etc/otelcol/collector.yaml"]
+    networks: [netagent-demo]
+    ports:
+      - "${COLLECTOR_OTLP_PORT:-4317}:4317" # OTLP gRPC for NetAgent
+    volumes:
+      - ./collector.yaml:/etc/otelcol/collector.yaml:ro
+    depends_on:
+      - tempo
+
+  prom:
+    image: ${PROM_IMAGE:-prom/prometheus}
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=12h"
+      - "--web.enable-lifecycle"
+    networks: [netagent-demo]
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: ${GRAFANA_IMAGE:-grafana/grafana}
+    networks: [netagent-demo]
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prom
+      - tempo
